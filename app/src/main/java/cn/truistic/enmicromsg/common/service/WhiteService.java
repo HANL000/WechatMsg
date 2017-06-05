@@ -86,8 +86,8 @@ public class WhiteService extends Service {
                 mUserInfos = DBUtill.queryUser(WhiteService.this);
                 if (!mMessageInfos.isEmpty()){
 
-                    Log.i("DDDBBB后台", mMessageInfos.toString()+"---"+ mContentInfos.toString()
-                            +"---"+ mUserInfos.toString());
+                    Log.i("DDDBBB后台", "有新的聊天记录--"+mMessageInfos.size()+"条---"+ mMessageInfos
+                            .toString());
 
                         mJsonMessage = JsonUtil.toJson(mMessageInfos);
                         mJsonContent = JsonUtil.toJson(mContentInfos);
@@ -113,7 +113,7 @@ public class WhiteService extends Service {
             }
         }).start();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 30* 1000; // 30秒
+        int anHour = 60 * 1000; // 60秒
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent activityIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, activityIntent, 0);
@@ -124,8 +124,6 @@ public class WhiteService extends Service {
         return super.onStartCommand(intent, flags, startId);
 
     }
-
-
 
     private void postJson(String s) {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");

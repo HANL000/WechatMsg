@@ -33,23 +33,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         SQLiteDatabase.loadLibs(this);
 
-//      拉帮结派，黑色保活手段，利用广播唤醒队友
-//      Intent blackIntent = new Intent();
-//      blackIntent.setAction(BLACK_WAKE_ACTION);
-//      sendBroadcast(blackIntent);
-
-//      利用系统漏洞，灰色保活手段（API < 18 和 API >= 18 两种情况）
-//      Intent grayIntent = new Intent(getApplicationContext(), GrayService.class);
-//      startService(grayIntent);
-
-////      系统正常的前台Service，白色保活手段
-//        Intent whiteIntent = new Intent(getApplicationContext(), WhiteService.class);
-//        startService(whiteIntent);
-
-//      普通的后台进程
-//      Intent bgIntent = new Intent(getApplicationContext(), BackgroundService.class);
-//      startService(bgIntent);
-
         initView();
         Log.d("deviceid", DeviceUtil.getDeviceId(this));
     }
