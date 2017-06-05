@@ -65,7 +65,6 @@ public class HomePresenter implements MainMVP.IHomePresenter {
     private String mSelection;
     private String mTime;
 
-    //ddd
 
     public HomePresenter(Context context, MainMVP.IHomeView homeView) {
         this.context = context;
