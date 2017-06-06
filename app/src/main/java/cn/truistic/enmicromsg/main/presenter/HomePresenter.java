@@ -182,7 +182,6 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 homeModel.saveState(MainMVP.IHomeView.Progress.UPLOAD_DATA, MainMVP.IHomeView.State.TRUE);
                 flag = false;
 
-
             }
 
 
@@ -448,7 +447,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
     /**
      * 解析微信相关数据*********************************查询联系人****************************************
      *
-     * @return
+     * @return true
      */
     private boolean analysisContent() {
         // 1.计算数据库密码
