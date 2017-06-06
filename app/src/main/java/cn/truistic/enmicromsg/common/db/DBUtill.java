@@ -144,8 +144,8 @@ public class DBUtill {
                     mIsSend="接收";
                 }
 
-                mMessageInfo = new MessageInfo(msgId,mMsgSvrId,mType,mStatus,mIsSend,mIsShowTimer,
-                        formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
+                mMessageInfo = new MessageInfo(imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
+                        mIsShowTimer,formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
                         mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChaId,mBizChatUserId,
                         mMsgSeq,mFlag);
 
@@ -236,8 +236,8 @@ public class DBUtill {
                 mContactLabelIds = c1.getString(c1.getColumnIndex("contactLabelIds"));
                 mLvbuff = c1.getBlob(c1.getColumnIndex("lvbuff"));
 
-                mContentInfo = new ContentInfo(mUserName,mAlias,mConRemark,mDomainList,mNickName,
-                        mPyInitial,mQuanPin,mShowHead,mCttype,mWeiboFlag,mWeiboNickname,
+                mContentInfo = new ContentInfo(imei,mUserName,mAlias,mConRemark,mDomainList,
+                        mNickName,mPyInitial,mQuanPin,mShowHead,mCttype,mWeiboFlag,mWeiboNickname,
                         mConRemarkPYFull,mConRemarkPYShort,mLvbuff,mVerifyFlag,mEncryptUsername,
                         mChatroomFlag,mDeleteFlag,mContactLabelIds);
 
@@ -309,7 +309,7 @@ public class DBUtill {
                 mVatype = c1.getString(c1.getColumnIndex("type"));
                 mValue = c1.getString(c1.getColumnIndex("value"));
 
-                mUserInfo = new UserInfo(mVaid,mVatype,mValue);
+                mUserInfo = new UserInfo(imei,mVaid,mVatype,mValue);
                 mUserInfos.add(mUserInfo);
 
 

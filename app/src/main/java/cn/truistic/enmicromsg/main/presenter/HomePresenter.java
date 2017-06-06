@@ -45,7 +45,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
 
     private static final String urlPath = "http://113.105.55.205:8090/UpData/ReceiveWeChat.aspx";
 
-    private String  mContent,mCreateTime,mTalker,
+    private String mContent,mCreateTime,mTalker,
             mIsSend,mUserName,mAlias,mNickName,mMsgSvrId,mType,mStatus,mIsShowTimer,mReserved,mImgPath,mTransContent
             ,mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChatUserId,mMsgSeq,mFlag,mBizChaId, mVatype,mValue,
             mConRemark,mDomainList,mPyInitial,mQuanPin,mShowHead,mCttype,mWeiboFlag,mWeiboNickname,
@@ -64,6 +64,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
     private MainMVP.IHomeModel homeModel;
     private String mSelection;
     private String mTime;
+
 
 
     public HomePresenter(Context context, MainMVP.IHomeView homeView) {
@@ -349,6 +350,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         String uinStr = String.valueOf(SharedPerfUtil.getUin(context));
         String imei = DeviceUtil.getDeviceId(context);
         String dbPwd = MD5Util.md5(imei + uinStr).substring(0, 7);
+
         if (dbPwd == null)
             return false;
         homeModel.saveDbPwd(dbPwd);
@@ -422,7 +424,8 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                     mIsSend="接收";
                 }
 
-                mMessageInfo = new MessageInfo(msgId,mMsgSvrId,mType,mStatus,mIsSend,mIsShowTimer,
+                mMessageInfo = new MessageInfo(imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
+                        mIsShowTimer,
                         formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
                         mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChaId,mBizChatUserId,
                         mMsgSeq,mFlag);
@@ -516,8 +519,8 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 mContactLabelIds = c1.getString(c1.getColumnIndex("contactLabelIds"));
                 mLvbuff = c1.getBlob(c1.getColumnIndex("lvbuff"));
 
-                mContentInfo = new ContentInfo(mUserName,mAlias,mConRemark,mDomainList,mNickName,
-                        mPyInitial,mQuanPin,mShowHead,mCttype,mWeiboFlag,mWeiboNickname,
+                mContentInfo = new ContentInfo(imei,mUserName,mAlias,mConRemark,mDomainList,
+                        mNickName,mPyInitial,mQuanPin,mShowHead,mCttype,mWeiboFlag,mWeiboNickname,
                         mConRemarkPYFull,mConRemarkPYShort,mLvbuff,mVerifyFlag,mEncryptUsername,
                         mChatroomFlag,mDeleteFlag,mContactLabelIds);
 
@@ -587,7 +590,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 mVatype = c1.getString(c1.getColumnIndex("type"));
                 mValue = c1.getString(c1.getColumnIndex("value"));
 
-                mUserInfo = new UserInfo(mVaid,mVatype,mValue);
+                mUserInfo = new UserInfo(imei,mVaid,mVatype,mValue);
                 mUserInfos.add(mUserInfo);
 
 

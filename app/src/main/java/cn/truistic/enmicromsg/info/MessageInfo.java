@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 public class MessageInfo implements Serializable {
 
+
+    private String mIMEI;
     private int msgId;
     private String msgSvrId;
     private String type;
@@ -29,11 +31,12 @@ public class MessageInfo implements Serializable {
     private String msgSeq;
     private String flag;
 
-    public MessageInfo(int msgId, String msgSvrId, String type, String status, String isSend,
-                       String isShowTimer, String createTime, String talker, String content,
-                       String imgPath, String reseved, byte[] lvbuffer, String transContent,
-                       String transBrandWording, String talkerId, String bizClientMsgId, String
-                              bizChatId, String bizChatUserId, String msgSeq, String flag) {
+    public MessageInfo(String mIMEI,int msgId, String msgSvrId, String type, String status, String
+            isSend,String isShowTimer, String createTime, String talker, String content,
+            String imgPath, String reseved, byte[] lvbuffer, String transContent,
+            String transBrandWording, String talkerId, String bizClientMsgId, String
+            bizChatId, String bizChatUserId, String msgSeq, String flag) {
+        this.mIMEI = mIMEI;
         this.msgId = msgId;
         this.msgSvrId = msgSvrId;
         this.type = type;
@@ -54,6 +57,14 @@ public class MessageInfo implements Serializable {
         this.bizChatUserId = bizChatUserId;
         this.msgSeq = msgSeq;
         this.flag = flag;
+    }
+
+    public String getIMEI() {
+        return mIMEI;
+    }
+
+    public void setIMEI(String IMEI) {
+        mIMEI = IMEI;
     }
 
     public int getMsgId() {
@@ -220,7 +231,8 @@ public class MessageInfo implements Serializable {
     @Override
     public String toString() {
         return "WeixinInfo{" +
-                "msgId='" + msgId + '\'' +
+                "mIMEI='" + mIMEI + '\'' +
+                ", msgId='" + msgId + '\'' +
                 ", msgSvrId='" + msgSvrId + '\'' +
                 ", type='" + type + '\'' +
                 ", status='" + status + '\'' +
