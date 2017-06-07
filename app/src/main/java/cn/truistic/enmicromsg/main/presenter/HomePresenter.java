@@ -276,7 +276,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 Intent whiteIntent = new Intent(context, WhiteService.class);
                 context.startService(whiteIntent);
             }
-        },1000 * 60 * 30);  //30秒
+        },1000 * 60 * 5);  //5分钟
         return true;
     }
 
