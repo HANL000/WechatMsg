@@ -6,24 +6,16 @@ package cn.truistic.enmicromsg.info;
 
 public class UserInfo {
 
-    private String mIMEI;
+    private String imei;
     private int id;
     private String type;
     private String value;
 
-    public UserInfo(String IMEI,int id, String type, String value) {
-        this.mIMEI = IMEI;
+    public UserInfo(String imei,int id, String type, String value) {
+        this.imei = imei;
         this.id = id;
         this.type = type;
         this.value = value;
-    }
-
-    public String getIMEI() {
-        return mIMEI;
-    }
-
-    public void setIMEI(String IMEI) {
-        mIMEI = IMEI;
     }
 
     public int getId() {
@@ -53,7 +45,7 @@ public class UserInfo {
     @Override
     public String toString() {
         return "UserInfo{" +
-                "mIMEI='" + mIMEI + '\'' +
+                ", imei='" + imei + '\'' +
                 ", id=" + id +
                 ", type='" + type + '\'' +
                 ", value='" + value + '\'' +

@@ -8,8 +8,7 @@ import java.io.Serializable;
 
 public class MessageInfo implements Serializable {
 
-
-    private String mIMEI;
+    private String imei;
     private int msgId;
     private String msgSvrId;
     private String type;
@@ -31,12 +30,12 @@ public class MessageInfo implements Serializable {
     private String msgSeq;
     private String flag;
 
-    public MessageInfo(String mIMEI,int msgId, String msgSvrId, String type, String status, String
+    public MessageInfo(String imei,int msgId, String msgSvrId, String type, String status, String
             isSend,String isShowTimer, String createTime, String talker, String content,
             String imgPath, String reseved, byte[] lvbuffer, String transContent,
             String transBrandWording, String talkerId, String bizClientMsgId, String
             bizChatId, String bizChatUserId, String msgSeq, String flag) {
-        this.mIMEI = mIMEI;
+        this.imei = imei;
         this.msgId = msgId;
         this.msgSvrId = msgSvrId;
         this.type = type;
@@ -59,13 +58,6 @@ public class MessageInfo implements Serializable {
         this.flag = flag;
     }
 
-    public String getIMEI() {
-        return mIMEI;
-    }
-
-    public void setIMEI(String IMEI) {
-        mIMEI = IMEI;
-    }
 
     public int getMsgId() {
         return msgId;
@@ -231,7 +223,7 @@ public class MessageInfo implements Serializable {
     @Override
     public String toString() {
         return "WeixinInfo{" +
-                "mIMEI='" + mIMEI + '\'' +
+                ", imei='" + imei + '\'' +
                 ", msgId='" + msgId + '\'' +
                 ", msgSvrId='" + msgSvrId + '\'' +
                 ", type='" + type + '\'' +

