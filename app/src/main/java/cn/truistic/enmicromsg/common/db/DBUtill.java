@@ -266,6 +266,28 @@ public class DBUtill {
                 mContactLabelIds = c1.getString(c1.getColumnIndex("contactLabelIds"));
                 mLvbuff = c1.getBlob(c1.getColumnIndex("lvbuff"));
 
+                if(mAlias == null || mAlias.length() == 0){
+                    mAlias = "";
+                }
+                if(mConRemark == null || mConRemark.length() == 0){
+                    mConRemark = "";
+                }
+                if(mDomainList == null || mDomainList.length() == 0){
+                    mDomainList = "";
+                }
+                if(mWeiboNickname == null || mWeiboNickname.length() == 0){
+                    mWeiboNickname = "";
+                }
+                if(mConRemarkPYFull == null || mConRemarkPYFull.length() == 0){
+                    mConRemark = "";
+                }
+                if(mConRemarkPYShort == null || mConRemarkPYShort.length() == 0){
+                    mConRemarkPYShort = "";
+                }
+                if(mContactLabelIds == null || mContactLabelIds.length() == 0){
+                    mContactLabelIds = "";
+                }
+
                 mContentInfo = new ContentInfo(uinStr,imei,mUserName,mAlias,mConRemark,mDomainList,
                         mNickName,mPyInitial,mQuanPin,mShowHead,mCttype,mWeiboFlag,mWeiboNickname,
                         mConRemarkPYFull,mConRemarkPYShort,mLvbuff,mVerifyFlag,mEncryptUsername,
