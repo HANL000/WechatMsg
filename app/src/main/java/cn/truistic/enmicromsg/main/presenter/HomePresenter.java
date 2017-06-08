@@ -222,8 +222,6 @@ public class HomePresenter implements MainMVP.IHomePresenter {
             }
         }).start();
 
-
-
         return true;
     }
 
@@ -250,7 +248,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 Intent whiteIntent = new Intent(context, WhiteService.class);
                 context.startService(whiteIntent);
             }
-        },1000 * 60 * 5);  //5分钟
+        },1000 * 60);  //5分钟
         return true;
     }
 
@@ -509,7 +507,6 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                         mChatroomFlag,mDeleteFlag,mContactLabelIds);
 
                 mContentInfos.add(mContentInfo);
-//                postJson(ContentUrlPath,mJsonContent);
 
                 Log.i("DDDBBB---Presenter", mContentInfo.toString());
             }

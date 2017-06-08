@@ -1,7 +1,6 @@
 package cn.truistic.enmicromsg.common.util;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -47,7 +46,6 @@ public class DeviceUtil {
         }
     }
 
-
     /**
      * 将微信消息中的CreateTime转换成标准格式的时间（yyyy-MM-dd HH:mm:ss）
      *
@@ -86,6 +84,5 @@ public class DeviceUtil {
 
         });
     }
-
 
 }

@@ -1,6 +1,7 @@
 package cn.truistic.enmicromsg.main.ui;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -32,7 +33,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SQLiteDatabase.loadLibs(this);
-
         initView();
         Log.d("deviceid", DeviceUtil.getDeviceId(this));
     }

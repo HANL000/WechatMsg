@@ -265,7 +265,6 @@ public class DBUtill {
     @Nullable
     public static List<UserInfo> queryUser(Context context) {
 
-        //getWechatFile(context);
         SQLiteDatabase.loadLibs(context);
         // 1.计算数据库密码
         String uinStr = String.valueOf(SharedPerfUtil.getUin(context));
