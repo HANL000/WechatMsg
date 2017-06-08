@@ -10,25 +10,18 @@ import android.os.SystemClock;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import cn.truistic.enmicromsg.R;
 import cn.truistic.enmicromsg.common.db.DBUtill;
+
 import cn.truistic.enmicromsg.common.util.JsonUtil;
 import cn.truistic.enmicromsg.info.ContentInfo;
 import cn.truistic.enmicromsg.info.MessageInfo;
 import cn.truistic.enmicromsg.info.UserInfo;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
-import static android.R.id.list;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
+import static cn.truistic.enmicromsg.common.util.DeviceUtil.postJson;
 
 
 /**
@@ -128,31 +121,6 @@ public class WhiteService extends Service {
         startForeground(FOREGROUND_ID, notification);
         return super.onStartCommand(intent, flags, startId);
 
-    }
-
-    private void postJson(String url,String s) {
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        OkHttpClient client = new OkHttpClient();//创建okhttp实例
-        RequestBody body=RequestBody.create(JSON,s);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-        okhttp3.Call call = client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-                Log.i("DDDBBB----后台服务", "onFailure: " + e);
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Log.i("DDDBBB----后台服务", "onResponse: " + response.body().string());
-                }
-            }
-
-        });
     }
 
 

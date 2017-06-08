@@ -36,6 +36,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 import static cn.truistic.enmicromsg.common.util.DeviceUtil.formatTime;
+import static cn.truistic.enmicromsg.common.util.DeviceUtil.postJson;
 import static net.sqlcipher.database.SQLiteDatabase.openOrCreateDatabase;
 
 /**
@@ -234,36 +235,6 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         return true;
     }
 
-    private void postJson(String url, final String s) {
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        OkHttpClient client = new OkHttpClient();//创建okhttp实例
-        client.newBuilder().connectTimeout(TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(TIMEOUT,TimeUnit.SECONDS)
-                .readTimeout(TIMEOUT,TimeUnit.SECONDS);
-        RequestBody body=RequestBody.create(JSON,s);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-        okhttp3.Call call = client.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(okhttp3.Call call, IOException e) {
-
-                Log.i("DDDBBB----Presenter", "onFailure: " + e);
-
-            }
-
-            @Override
-            public void onResponse(okhttp3.Call call, Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    Log.i("DDDBBB----Presenter", "onResponse-------: "+s+"------" + response.body()
-                            .string());
-                }
-            }
-
-        });
-    }
 
     /**
      * 检测微信是否已经安装
