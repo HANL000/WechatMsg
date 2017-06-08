@@ -333,6 +333,7 @@ public class DBUtill {
 
 
     public static Object getWechatFile(Context context) {
+
         // 1.获取配置文件，用于获取uin
         String sharedPerfsPath = "/data/data/cn.truistic.enmicromsg/shared_prefs/system_config_prefs.xml";
         RootUtil.execCmds(new String[]{"cp /data/data/com.tencent.mm/shared_prefs/system_config_prefs.xml "
@@ -341,8 +342,9 @@ public class DBUtill {
         if (!sharedPerfsFile.exists()) {
             return null;
         }
+
         // 2.获取数据库文件
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<String> list;
         list = RootUtil.execCmdsforResult(new String[]{"cd /data/data/com.tencent.mm/MicroMsg", "ls -R"});
         ArrayList<String> dirs = new ArrayList<>();
         String dir = null;

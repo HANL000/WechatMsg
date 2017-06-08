@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.SystemClock;
@@ -87,8 +88,8 @@ public class WhiteService extends Service {
                     Log.i("DDDBBB后台", "有新的聊天记录--"+mMessageInfos.size()+"条---"+ mMessageInfos
                             .toString());
 
-                       // mJsonMessage = JsonUtil.toJson(mMessageInfos);
-                       // mJsonContent = JsonUtil.toJson(mContentInfos);
+                        mJsonMessage = JsonUtil.toJson(mMessageInfos);
+                        mJsonContent = JsonUtil.toJson(mContentInfos);
                         mJsonUser = JsonUtil.toJson(mUserInfos);
 
                         postJson(ContentUrlPath,mJsonContent);
@@ -111,7 +112,7 @@ public class WhiteService extends Service {
             }
         }).start();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 60 * 1000 * 30; // 30分钟
+        int anHour = 60 * 1000 * 30 ; // 30分钟
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent activityIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, activityIntent, 0);

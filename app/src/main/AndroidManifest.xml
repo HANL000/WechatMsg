@@ -38,7 +38,7 @@
         <service
             android:name=".common.service.WhiteService"
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:process=":white" />
 
         <receiver
