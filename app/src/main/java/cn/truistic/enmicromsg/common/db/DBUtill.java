@@ -144,6 +144,32 @@ public class DBUtill {
                     mIsSend="接收";
                 }
 
+
+                if(mBizChatUserId == null || mBizChatUserId.length() == 0){
+                    mBizChatUserId = "";
+                }
+                if(mBizClientMsgId == null || mBizClientMsgId.length() == 0){
+                    mBizClientMsgId = "";
+                }
+                if(mIsShowTimer == null || mIsShowTimer.length() == 0){
+                    mIsShowTimer = "";
+                }
+                if(mReserved == null || mReserved.length() == 0){
+                    mReserved = "";
+                }
+                if(mTransBrandWording == null || mTransBrandWording.length() == 0){
+                    mTransBrandWording = "";
+                }
+                if(mTransContent == null || mTransContent.length() == 0){
+                    mTransContent = "";
+                }
+                if(mImgPath == null || mImgPath.length() == 0){
+                    mImgPath = "";
+                }
+                if(mFlag == null || mFlag.length() == 0){
+                    mFlag = "";
+                }
+
                 mMessageInfo = new MessageInfo(uinStr,imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
                         mIsShowTimer,formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
                         mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChaId,mBizChatUserId,
