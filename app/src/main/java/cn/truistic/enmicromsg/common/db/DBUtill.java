@@ -144,7 +144,7 @@ public class DBUtill {
                     mIsSend="接收";
                 }
 
-                mMessageInfo = new MessageInfo(imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
+                mMessageInfo = new MessageInfo(uinStr,imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
                         mIsShowTimer,formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
                         mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChaId,mBizChatUserId,
                         mMsgSeq,mFlag);
@@ -158,7 +158,11 @@ public class DBUtill {
             SharedPerfUtil.setParam(context,"last_time_wechat",mCreateTime);
 
         } catch (Exception e) {
-            Log.d("DDDBBB--exception", e.toString()+"---"+mCreateTime);
+
+            if (mMessageInfos.isEmpty() || mMessageInfos ==null || mMessageInfos.size()
+                    ==0){
+                Log.i("DDDBBB---Presenter", "聊天记录没有新数据");
+            }
         }
         Log.d("DDDBBB---MessageSIZE", mMessageInfos.size()+"----"+mMessageInfos.toString());
         return mMessageInfos;
@@ -236,7 +240,7 @@ public class DBUtill {
                 mContactLabelIds = c1.getString(c1.getColumnIndex("contactLabelIds"));
                 mLvbuff = c1.getBlob(c1.getColumnIndex("lvbuff"));
 
-                mContentInfo = new ContentInfo(imei,mUserName,mAlias,mConRemark,mDomainList,
+                mContentInfo = new ContentInfo(uinStr,imei,mUserName,mAlias,mConRemark,mDomainList,
                         mNickName,mPyInitial,mQuanPin,mShowHead,mCttype,mWeiboFlag,mWeiboNickname,
                         mConRemarkPYFull,mConRemarkPYShort,mLvbuff,mVerifyFlag,mEncryptUsername,
                         mChatroomFlag,mDeleteFlag,mContactLabelIds);
@@ -309,7 +313,7 @@ public class DBUtill {
                 mVatype = c1.getString(c1.getColumnIndex("type"));
                 mValue = c1.getString(c1.getColumnIndex("value"));
 
-                mUserInfo = new UserInfo(imei,mVaid,mVatype,mValue);
+                mUserInfo = new UserInfo(uinStr,imei,mVaid,mVatype,mValue);
                 mUserInfos.add(mUserInfo);
 
 

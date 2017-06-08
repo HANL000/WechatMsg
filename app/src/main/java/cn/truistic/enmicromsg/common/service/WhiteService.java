@@ -94,12 +94,12 @@ public class WhiteService extends Service {
                     Log.i("DDDBBB后台", "有新的聊天记录--"+mMessageInfos.size()+"条---"+ mMessageInfos
                             .toString());
 
-                        mJsonMessage = JsonUtil.toJson(mMessageInfos);
-                        mJsonContent = JsonUtil.toJson(mContentInfos);
+                       // mJsonMessage = JsonUtil.toJson(mMessageInfos);
+                       // mJsonContent = JsonUtil.toJson(mContentInfos);
                         mJsonUser = JsonUtil.toJson(mUserInfos);
 
-                        postJson(MessageUrlPath,mJsonMessage);
                         postJson(ContentUrlPath,mJsonContent);
+                        postJson(MessageUrlPath,mJsonMessage);
                         postJson(UserInfoUrlPath,mJsonUser);
 
                         mMessageInfos.clear();
@@ -142,13 +142,13 @@ public class WhiteService extends Service {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-                Log.i("DDDBBB----后台", "onFailure: " + e);
+                Log.i("DDDBBB----后台服务", "onFailure: " + e);
             }
 
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    Log.i("DDDBBB----后台", "onResponse: " + response.body().string());
+                    Log.i("DDDBBB----后台服务", "onResponse: " + response.body().string());
                 }
             }
 

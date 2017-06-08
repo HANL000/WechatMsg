@@ -6,16 +6,34 @@ package cn.truistic.enmicromsg.info;
 
 public class UserInfo {
 
+    private String uin;
     private String imei;
     private int id;
     private String type;
     private String value;
 
-    public UserInfo(String imei,int id, String type, String value) {
+    public UserInfo(String uin,String imei,int id, String type, String value) {
+        this.uin = uin;
         this.imei = imei;
         this.id = id;
         this.type = type;
         this.value = value;
+    }
+
+    public String getUin() {
+        return uin;
+    }
+
+    public void setUin(String uin) {
+        this.uin = uin;
+    }
+
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
     }
 
     public int getId() {
@@ -45,6 +63,7 @@ public class UserInfo {
     @Override
     public String toString() {
         return "UserInfo{" +
+                "uin='" + uin + '\'' +
                 ", imei='" + imei + '\'' +
                 ", id=" + id +
                 ", type='" + type + '\'' +

@@ -6,6 +6,7 @@ package cn.truistic.enmicromsg.info;
 
 public class ContentInfo {
 
+    private String uin;
     private String imei;
     private String username;
     private String alias;
@@ -28,10 +29,11 @@ public class ContentInfo {
     private String contactLabelIds;
 
 
-    public ContentInfo(String imei,String username, String alias, String conRemark, String
-            domainList,String nickname, String pyInitial, String quanPin, String showHead, String type, String
+    public ContentInfo(String uin,String imei,String username, String alias, String conRemark,
+                       String domainList,String nickname, String pyInitial, String quanPin, String showHead, String type, String
             weiboFlag, String weiboNickname, String conRemarkPYFull, String conRemarkPYShort,
             byte[] lvbuff, String verifyFlag, String encryptUsername, String chatroomFlag, String deleteFlag, String contactLabelIds) {
+        this.uin = uin;
         this.imei = imei;
         this.username = username;
         this.alias = alias;
@@ -54,6 +56,22 @@ public class ContentInfo {
         this.contactLabelIds = contactLabelIds;
     }
 
+
+    public String getUin() {
+        return uin;
+    }
+
+    public void setUin(String uin) {
+        this.uin = uin;
+    }
+
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
+    }
 
     public String getUsername() {
         return username;
@@ -209,7 +227,8 @@ public class ContentInfo {
 
     @Override
     public String toString() {
-        return "UserInfo{" +
+        return "ContentInfo{" +
+                "uin='" + uin + '\'' +
                 ", imei='" + imei + '\'' +
                 ", username='" + username + '\'' +
                 ", alias='" + alias + '\'' +
