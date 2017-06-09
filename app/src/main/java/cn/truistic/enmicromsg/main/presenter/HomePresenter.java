@@ -248,7 +248,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 Intent whiteIntent = new Intent(context, WhiteService.class);
                 context.startService(whiteIntent);
             }
-        },1000 * 60);  //5分钟
+        },1000 * 60 *5);  //5分钟
         return true;
     }
 
@@ -430,6 +430,9 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 }
                 if(mFlag == null || mFlag.length() == 0){
                     mFlag = "";
+                }
+                if(mMsgSeq == null || mMsgSeq.length() == 0){
+                    mMsgSeq = "";
                 }
 
 

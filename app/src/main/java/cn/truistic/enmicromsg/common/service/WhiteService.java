@@ -112,7 +112,7 @@ public class WhiteService extends Service {
             }
         }).start();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 60 * 1000  ; // 30分钟
+        int anHour = 60 * 1000 *30 ; // 30分钟
         long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
         Intent activityIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, activityIntent, 0);
