@@ -27,8 +27,10 @@ import cn.truistic.enmicromsg.info.UserInfo;
 import cn.truistic.enmicromsg.main.MainMVP;
 import cn.truistic.enmicromsg.main.model.HomeModel;
 
+import static android.R.attr.offset;
 import static cn.truistic.enmicromsg.common.util.DeviceUtil.formatTime;
 import static cn.truistic.enmicromsg.common.util.DeviceUtil.postJson;
+
 import static net.sqlcipher.database.SQLiteDatabase.openOrCreateDatabase;
 
 /**
@@ -358,7 +360,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
             mTime = (String) SharedPerfUtil.getParam(context,"last_time_wechat","0");
             mSelection = "createTime > ?";
             try {
-             database = SQLiteDatabase.openOrCreateDatabase(dbFile, dbPwd, null, hook);
+                database = SQLiteDatabase.openOrCreateDatabase(dbFile, dbPwd, null, hook);
                 break;
             } catch (Exception e) {
                 j++;
@@ -369,10 +371,12 @@ public class HomePresenter implements MainMVP.IHomePresenter {
         }
 
         try {
-
             //*********************************查询消息记录****************************************
-            Cursor c = database.query("message", null,mSelection,new String[]{mTime}, null, null,
-                    null);
+            int pc = 1;
+            String limit = "msgId asc limit "+ pc + " offset " + 10;
+
+            Cursor c = database.query("message", null, mSelection, new String[]{mTime}, null,
+                    null,null,10+","+pc);    //"0,500"
             while (c.moveToNext()) {
 
                 //消息ID
@@ -407,6 +411,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                     mIsSend="接收";
                 }
 
+
                 if(mBizChatUserId == null || mBizChatUserId.length() == 0){
                     mBizChatUserId = "";
                 }
@@ -431,29 +436,25 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 if(mFlag == null || mFlag.length() == 0){
                     mFlag = "";
                 }
-                if(mMsgSeq == null || mMsgSeq.length() == 0){
-                    mMsgSeq = "";
-                }
-
-
 
                 mMessageInfo = new MessageInfo(uinStr,imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
                         mIsShowTimer,formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
                         mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChaId,mBizChatUserId,
                         mMsgSeq,mFlag);
 
+
+                Log.i("DDDBBB--P--MessageInfo", mMessageInfo.toString());
                 mMessageInfos.add(mMessageInfo);
-
-
-                Log.i("DDDBBB---Presenter", mMessageInfo.toString());
             }
             c.close();
             database.close();
             SharedPerfUtil.setParam(context,"last_time_wechat",mCreateTime);
+
         } catch (Exception e) {
             if (mMessageInfos.isEmpty() || mMessageInfos ==null || mMessageInfos.size()
                     ==0){
                 Log.i("DDDBBB---Presenter", "聊天记录没有新数据");
+
             }
         }
         return true;

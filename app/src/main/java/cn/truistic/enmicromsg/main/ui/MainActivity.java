@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import net.sqlcipher.database.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SQLiteDatabase.loadLibs(this);
+        CrashReport.initCrashReport(getApplicationContext(), "bbab25abe6", false); //最简单的初始化
         initView();
         Log.d("deviceid", DeviceUtil.getDeviceId(this));
     }

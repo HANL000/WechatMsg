@@ -83,7 +83,7 @@ public class WhiteService extends Service {
                 mMessageInfos = DBUtill.queryMessage(WhiteService.this);
                 mContentInfos = DBUtill.queryContent(WhiteService.this);
                 mUserInfos = DBUtill.queryUser(WhiteService.this);
-                if (!mMessageInfos.isEmpty()){
+                if (!mMessageInfos.isEmpty()|| mMessageInfos ==null){
 
                     Log.i("DDDBBB后台", "有新的聊天记录--"+mMessageInfos.size()+"条---"+ mMessageInfos
                             .toString());

@@ -176,7 +176,7 @@ public class DBUtill {
                         mMsgSeq,mFlag);
 
 
-                Log.i("DDDBBB--MessageInfo", mMessageInfo.toString());
+                Log.i("DDDBBB--U--MessageInfo", mMessageInfo.toString());
                 mMessageInfos.add(mMessageInfo);
             }
             c.close();
