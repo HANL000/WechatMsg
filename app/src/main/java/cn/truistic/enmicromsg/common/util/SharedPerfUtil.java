@@ -2,6 +2,7 @@ package cn.truistic.enmicromsg.common.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import cn.truistic.enmicromsg.R;
@@ -29,14 +30,27 @@ public class SharedPerfUtil {
         return getAppSharedPerf(context).getBoolean(context.getString(R.string.saved_app_is_first_start), true);
     }
 
-    // 获取状态
+    // 获取状态--------------IHomeView
     public static int getState(Context context, MainMVP.IHomeView.Progress progress) {
         SharedPreferences sp = getAppSharedPerf(context);
         return sp.getInt(progress.name(), 0);
     }
 
-    // 保存状态
+    // 保存状态-------------IHomeView
     public static void saveProgressState(Context context, MainMVP.IHomeView.Progress progress, int state) {
+        SharedPreferences.Editor editor = getAppSharedPerf(context).edit();
+        editor.putInt(progress.name(), state);
+        editor.commit();
+    }
+
+    // 获取状态--------------IHomeView
+    public static int getState(Context context, MainMVP.IExportView.Progress progress) {
+        SharedPreferences sp = getAppSharedPerf(context);
+        return sp.getInt(progress.name(), 0);
+    }
+
+    // 保存状态-------------IHomeView
+    public static void saveProgressState(Context context, MainMVP.IExportView.Progress progress, int state) {
         SharedPreferences.Editor editor = getAppSharedPerf(context).edit();
         editor.putInt(progress.name(), state);
         editor.commit();
@@ -122,8 +136,7 @@ public class SharedPerfUtil {
      * @param defaultObject
      * @return
      */
-    public static Object getParam(Context context, String key,
-                                  Object defaultObject) {
+    public static Object getParam(Context context, String key, Object defaultObject) {
         String type = defaultObject.getClass().getSimpleName();
         @SuppressWarnings("deprecation")
         SharedPreferences sp = context.getSharedPreferences(FILE_NAME,

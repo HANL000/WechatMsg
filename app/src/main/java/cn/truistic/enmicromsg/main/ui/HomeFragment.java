@@ -22,10 +22,10 @@ import cn.truistic.enmicromsg.main.presenter.HomePresenter;
 public class HomeFragment extends Fragment implements MainMVP.IHomeView {
 
     private ImageView iv_wechat, iv_root, iv_permission, iv_data_get, iv_data_analysis,
-    iv_data_content,iv_data_user,iv_service,iv_data_upload;
+    iv_data_content,iv_data_user,iv_service,iv_data_uploadimage,iv_internet;
     private TextView tv_state_wechat, tv_state_root, tv_state_permission, tv_state_data_get,
     tv_state_data_analysis,tv_state_data_content,tv_state_data_user,tv_state_service,
-    tv_state_data_upload;
+    tv_state_data_uploadimage,tv_state_internet;
     private Button btn_detect;
     private RotateAnimation animation;
     private MainMVP.IHomePresenter homePresenter;
@@ -44,20 +44,23 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
         iv_root = (ImageView) view.findViewById(R.id.home_iv_root);
         iv_service = (ImageView)view.findViewById(R.id.home_iv_service);
         iv_permission = (ImageView) view.findViewById(R.id.home_iv_permission);
+        iv_internet = (ImageView)view.findViewById(R.id.home_iv_internet);
         iv_data_get = (ImageView) view.findViewById(R.id.home_iv_data_get);
         iv_data_analysis = (ImageView) view.findViewById(R.id.home_iv_data_analysia);
         iv_data_content = (ImageView) view.findViewById(R.id.home_iv_data_content);
         iv_data_user = (ImageView)view.findViewById(R.id.home_iv_data_user);
-        iv_data_upload = (ImageView)view.findViewById(R.id.home_iv_data_upload);
+        iv_data_uploadimage = (ImageView)view.findViewById(R.id.home_iv_data_uploadimage);
         tv_state_wechat = (TextView) view.findViewById(R.id.home_tv_state_wechat);
         tv_state_root = (TextView) view.findViewById(R.id.home_tv_state_root);
         tv_state_service = (TextView)view.findViewById(R.id.home_tv_state_service);
         tv_state_permission = (TextView) view.findViewById(R.id.home_tv_state_permission);
+        tv_state_internet = (TextView)view.findViewById(R.id.home_tv_state_internet);
         tv_state_data_get = (TextView) view.findViewById(R.id.home_tv_state_data_get);
         tv_state_data_analysis = (TextView) view.findViewById(R.id.home_tv_state_data_analysis);
         tv_state_data_content = (TextView)view.findViewById(R.id.home_tv_state_data_content);
         tv_state_data_user = (TextView)view.findViewById(R.id.home_tv_state_data_user);
-        tv_state_data_upload = (TextView)view.findViewById(R.id.home_tv_state_data_upload);
+        tv_state_data_uploadimage = (TextView)view.findViewById(R.id
+                .home_tv_state_data_uploadimage);
 
         btn_detect = (Button) view.findViewById(R.id.home_btn_detect);
         btn_detect.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +75,7 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         animation.setDuration(2000);
         animation.setRepeatCount(600);
+
     }
 
     @Override
@@ -79,6 +83,8 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
         btn_detect.setText(R.string.home_detect_start);
         btn_detect.setClickable(true);
     }
+
+
 
     @Override
     public void setProgressState(Progress progress, State state) {
@@ -91,6 +97,9 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
                 break;
             case DETECT_PERMISSION:
                 setPermissionState(state);
+                break;
+            case DETECT_INTERNET:
+                setInternetState(state);
                 break;
             case REQUEST_DATA:
                 setRequestDataState(state);
@@ -107,12 +116,11 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
             case DETECT_SERVICE:
                 setServiceState(state);
                 break;
-            case UPLOAD_DATA:
-                setUploadDataState(state);
+            case UPLOADIMAGE_DATA:
+                setUploadImageDataState(state);
                 break;
         }
     }
-
 
     private void setWeChatState(State state) {
         setIcon(iv_wechat, state);
@@ -167,6 +175,25 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
                 break;
         }
     }
+
+    private void setInternetState(State state) {
+        setIcon(iv_internet, state);
+        switch (state) {
+            case UNDETECTED:
+                tv_state_internet.setText(R.string.home_state_undetected);
+                break;
+            case TRUE:
+                tv_state_internet.setText("已检测");
+                break;
+            case FALSE:
+                tv_state_internet.setText(R.string.home_state_unauthorized);
+                break;
+            case DETECTING:
+                tv_state_internet.setText(R.string.home_state_detecting);
+                break;
+        }
+    }
+
     private void setServiceState(State state) {
         setIcon(iv_service, state);
         switch (state) {
@@ -185,20 +212,20 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
         }
     }
 
-    private void setUploadDataState(State state) {
-        setIcon(iv_data_upload, state);
+    private void setUploadImageDataState(State state) {
+        setIcon(iv_data_uploadimage, state);
         switch (state) {
             case UNDETECTED:
-                tv_state_data_upload.setText(R.string.home_state_undetected);
+                tv_state_data_uploadimage.setText(R.string.home_state_undetected);
                 break;
             case TRUE:
-                tv_state_data_upload.setText(R.string.home_state_upload);//已上传
+                tv_state_data_uploadimage.setText(R.string.home_state_upload);//已上传
                 break;
             case FALSE:
-                tv_state_data_upload.setText(R.string.home_state_not_up);//未上传
+                tv_state_data_uploadimage.setText(R.string.home_state_not_up);//未上传
                 break;
             case DETECTING:
-                tv_state_data_upload.setText("上传中");
+                tv_state_data_uploadimage.setText("上传中");
                 break;
         }
     }
@@ -221,7 +248,7 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
         }
     }
 
-    private void setAnalysisDataState(State state) {
+    private void setAnalysisContentState(State state) {
         setIcon(iv_data_content, state);
         switch (state) {
             case UNDETECTED:
@@ -239,7 +266,7 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
         }
     }
 
-    private void setAnalysisContentState(State state) {
+    private void setAnalysisDataState(State state) {
         setIcon(iv_data_analysis, state);
         switch (state) {
             case UNDETECTED:
@@ -274,7 +301,6 @@ public class HomeFragment extends Fragment implements MainMVP.IHomeView {
                 break;
         }
     }
-
 
     private void setIcon(ImageView iv, State state) {
         switch (state) {

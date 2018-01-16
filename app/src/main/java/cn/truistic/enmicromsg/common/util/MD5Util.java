@@ -15,17 +15,17 @@ public class MD5Util {
      * @return
      */
     public static String md5(String s) {
-        MessageDigest md5 = null;
+        MessageDigest md5;
         try {
             md5 = MessageDigest.getInstance("MD5");
             md5.update(s.getBytes("UTF-8"));
             byte[] encryption = md5.digest();//加密
             StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < encryption.length; i++) {
-                if (Integer.toHexString(0xff & encryption[i]).length() == 1) {
-                    sb.append("0").append(Integer.toHexString(0xff & encryption[i]));
+            for (byte anEncryption : encryption) {
+                if (Integer.toHexString(0xff & anEncryption).length() == 1) {
+                    sb.append("0").append(Integer.toHexString(0xff & anEncryption));
                 } else {
-                    sb.append(Integer.toHexString(0xff & encryption[i]));
+                    sb.append(Integer.toHexString(0xff & anEncryption));
                 }
             }
             return sb.toString();

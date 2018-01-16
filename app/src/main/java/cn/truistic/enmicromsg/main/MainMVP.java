@@ -12,29 +12,29 @@ public interface MainMVP {
 
     interface IHomeView {
 
-        enum Progress {DETECT_WECHAT, DETECT_ROOT, DETECT_PERMISSION, REQUEST_DATA,
-            ANALYSIS_DATA,ANALYSIS_CONNTENT,ANALYSIS_USER,DETECT_SERVICE,UPLOAD_DATA}
+        enum Progress {DETECT_WECHAT, DETECT_ROOT, DETECT_PERMISSION, REQUEST_DATA,DETECT_INTERNET,
+            ANALYSIS_DATA,ANALYSIS_CONNTENT,ANALYSIS_USER,DETECT_SERVICE,UPLOADIMAGE_DATA}
 
         enum State {UNDETECTED, DETECTING, TRUE, FALSE}
-//        void onOperateStart();
-
 
         void onDetectStop();
-
-//        void showCancelDialog();
-//
-//        void showSuccessDialog(String msg);
-//
-//        void showFailureDialog(String msg);
 
         void setProgressState(Progress progress, State state);
     }
 
-    interface IGroupsView {
+    interface IExportView {
+        enum Progress {UPLOAD_IMG}
 
+        enum State {UNDETECTED, DETECTING, TRUE, FALSE}
+
+        void onDetectStop();
+
+        void setProgressState(Progress progress, State state);
+
+       // void setProgress(int progress);
     }
 
-    interface IExportView {
+    interface IGroupsView {
 
     }
 
@@ -44,18 +44,6 @@ public interface MainMVP {
 
     interface IHomePresenter {
         void detect();
-
-//        boolean checkWechat();
-//
-//        boolean checkRoot();
-//
-//        boolean checkRootPermission();
-//
-//        boolean requestData();
-//
-//        boolean analysisData();
-
-//        void updateProgressState(int progress, int State);
     }
 
     interface IGroupsPresenter {
@@ -63,12 +51,12 @@ public interface MainMVP {
     }
 
     interface IExportPresenter {
+        void detect();
 
     }
 
     interface IHomeModel {
         IHomeView.State getState(IHomeView.Progress progress);
-
 
         void saveState(IHomeView.Progress progress, IHomeView.State state);
 
@@ -79,6 +67,25 @@ public interface MainMVP {
         String getDbPwd();
 
         void saveDbPwd(String pwd);
+    }
+
+    interface IExportModel {
+
+        IExportView.State getState(IExportView.Progress progress);
+
+        void saveState(IExportView.Progress progress, IExportView.State state);
+
+        int getDbNum();
+
+        void saveDbNum(int num);
+
+        String getDbPwd();
+
+        void saveDbPwd(String pwd);
+    }
+
+    interface ChangeText{
+        void onChangeText(String s);
     }
 
 

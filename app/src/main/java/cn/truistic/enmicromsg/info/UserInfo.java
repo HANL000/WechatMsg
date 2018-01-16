@@ -20,21 +20,6 @@ public class UserInfo {
         this.value = value;
     }
 
-    public String getUin() {
-        return uin;
-    }
-
-    public void setUin(String uin) {
-        this.uin = uin;
-    }
-
-    public String getImei() {
-        return imei;
-    }
-
-    public void setImei(String imei) {
-        this.imei = imei;
-    }
 
     public int getId() {
         return id;
@@ -50,14 +35,6 @@ public class UserInfo {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     @Override

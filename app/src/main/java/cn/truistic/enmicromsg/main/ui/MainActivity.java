@@ -1,31 +1,27 @@
 package cn.truistic.enmicromsg.main.ui;
 
 
-import android.content.Intent;
+
+
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 
 
-import com.tencent.bugly.crashreport.CrashReport;
-
+import com.xdandroid.hellodaemon.IntentWrapper;
 import net.sqlcipher.database.SQLiteDatabase;
-
 import java.util.ArrayList;
-
 import cn.truistic.enmicromsg.R;
 import cn.truistic.enmicromsg.base.BaseActivity;
-
 import cn.truistic.enmicromsg.common.util.DeviceUtil;
-
 /**
  * 主界面
  */
 public class MainActivity extends BaseActivity {
-
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -35,9 +31,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SQLiteDatabase.loadLibs(this);
-        CrashReport.initCrashReport(getApplicationContext(), "bbab25abe6", false); //最简单的初始化
         initView();
-        Log.d("deviceid", DeviceUtil.getDeviceId(this));
     }
 
     private void initView() {
@@ -47,14 +41,15 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         HomeFragment homeFragment = new HomeFragment();
-        GroupsFragment groupsFragment = new GroupsFragment();
         ExportFragment exportFragment = new ExportFragment();
+        GroupsFragment groupsFragment = new GroupsFragment();
 
         ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(homeFragment);
-        fragments.add(groupsFragment);
         fragments.add(exportFragment);
-        String[] titles = {getString(R.string.main_title_home), getString(R.string.main_title_grouds), getString(R.string.main_title_export)};
+        fragments.add(groupsFragment);
+        String[] titles = {getString(R.string.main_title_home),getString(R.string
+                .main_title_export),getString(R.string.main_title_grouds)};
         MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), fragments, titles);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(2);
@@ -78,4 +73,20 @@ public class MainActivity extends BaseActivity {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(false);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    //防止华为机型未加入白名单时按返回键回到桌面再锁屏后几秒钟进程被杀
+    @Override
+    public void onBackPressed() {
+        IntentWrapper.onBackPressed(this);
+    }
+
+    // TraceServiceImpl.stopService(); 需要停止服务的时候调用这个
 }

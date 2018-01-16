@@ -29,18 +29,15 @@ public class SplashActivity extends BaseActivity {
      * 延迟启动
      */
     private void delay() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isFirstStart) {
-                    Intent welcomeIntent = new Intent(SplashActivity.this, WelcomeActivity.class);
-                    startActivity(welcomeIntent);
-                } else {
-                    Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(mainIntent);
-                }
-                finish();
+        new Handler().postDelayed(() -> {
+            if (isFirstStart) {
+                Intent welcomeIntent = new Intent(SplashActivity.this, WelcomeActivity.class);
+                startActivity(welcomeIntent);
+            } else {
+                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(mainIntent);
             }
+            finish();
         }, DELAY_TIME);
     }
 

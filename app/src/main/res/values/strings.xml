@@ -1,28 +1,36 @@
 <resources>
     <!--App-->
-    <string name="app_name">EnMicroMsg</string>
+    <string name="app_name">微数据</string>
 
     <!--Welcome-->
-    <string name="welcome_label">欢迎使用EnMicroMsg</string>
+    <string name="welcome_label">欢迎使用微数据</string>
     <string name="welcome_manual">使用说明</string>
     <string name="welcome_manul_detial">1.本应用功能需要授予Root权限\n2.请勿使用本应用进行非法操作</string>
     <string name="welcome_start">开始使用</string>
 
     <!--Main-->
     <string name="main_title_home">首页</string>
-    <string name="main_title_grouds">群聊</string>
+    <string name="main_title_grouds">关于</string>
     <string name="main_title_export">导出</string>
+
+    <string name="app_error">应用程序错误</string>
+    <string name="submit_report">提交报告</string>
+    <string name="app_error_message">很抱歉，应用程序出现错误，即将退出。\n请选择邮件的方式将此错误报告提交给我，我会尽快修复这个问题，谢谢！</string>
+
 
     <!--Home-->
     <string name="home_item_wechat">微信是否已经安装</string>
     <string name="home_item_root">设备是否已Root</string>
     <string name="home_item_service">设备是否开启Service</string>
     <string name="home_item_permission">授予应用Root权限</string>
-    <string name="home_item_data">提取数据</string>
-    <string name="home_item_jiexi">解析聊天记录数据</string>
-    <string name="home_item_jiexicontent">解析联系人数据</string>
-    <string name="home_item_jiexiuser">解析本机微信号数据</string>
-    <string name="home_item_upload">上传数据</string>
+    <string name="home_item_internet">检测当前手机网络</string>
+    <string name="home_item_data">整理手机数据</string>
+    <string name="home_item_jiexi">整理手机记录数据</string>
+    <string name="home_item_jiexicontent">整理手机联系人数据</string>
+    <string name="home_item_jiexiuser">整理手机信息数据</string>
+    <string name="fragment_item_img">导出手机图片</string>
+    <string name="fragment_item_voice">整理手机语音</string>
+    <string name="home_item_uploadimage">整理手机图片数据</string>
     <string name="home_state_undetected">未检测</string>
     <string name="home_state_detecting">检测中</string>
     <string name="home_state_installed">已安装</string>
@@ -31,15 +39,16 @@
     <string name="home_state_unrooted">未Root</string>
     <string name="home_state_authorized">已授权</string>
     <string name="home_state_unauthorized">未授权</string>
-    <string name="home_state_not_get">未提取</string>
-    <string name="home_state_acquired">已提取</string>
+    <string name="home_state_not_get">未整理</string>
+    <string name="home_state_acquired">已整理</string>
     <string name="home_state_not_up">未上传</string>
     <string name="home_state_upload">已上传</string>
-    <string name="home_detect_start">一键分析</string>
-    <string name="home_detect_detecting">正在分析...</string>
-    <string name="home_detect_stop">停止分析</string>
-    <string name="home_desc">点击按钮进行检测并提取数据</string>
-
+    <string name="home_detect_update">检查更新</string>
+    <string name="home_detect_start">一键整理</string>
+    <string name="home_detect_detecting">正在整理...</string>
+    <string name="home_detect_stop">停止整理</string>
+    <string name="home_desc">点击按钮进行检测并整理数据</string>
+    <string name="home_update">点击按钮进行检测并更新软件</string>
     <!--SharedPerferences-->
     <string name="shared_perf_app">shared_app_file</string>
     <string name="shared_perf_data">shared_data_file</string>

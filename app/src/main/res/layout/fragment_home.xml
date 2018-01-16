@@ -29,7 +29,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_info_24dp" />
+                    android:src="@drawable/ic_info_24dp"/>
 
                 <TextView
                     android:id="@+id/home_tv_wechat"
@@ -40,7 +40,7 @@
                     android:layout_marginStart="72dp"
                     android:text="@string/home_item_wechat"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/home_tv_state_wechat"
@@ -52,7 +52,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/home_state_undetected"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -68,7 +68,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_info_24dp" />
+                    android:src="@drawable/ic_info_24dp"/>
 
                 <TextView
                     android:id="@+id/home_tv_root"
@@ -79,7 +79,7 @@
                     android:layout_marginStart="72dp"
                     android:text="@string/home_item_root"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/home_tv_state_root"
@@ -91,7 +91,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/home_state_undetected"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -107,7 +107,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_info_24dp" />
+                    android:src="@drawable/ic_info_24dp"/>
 
                 <TextView
                     android:id="@+id/home_tv_service"
@@ -118,7 +118,7 @@
                     android:layout_marginStart="72dp"
                     android:text="@string/home_item_service"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/home_tv_state_service"
@@ -130,7 +130,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/home_state_undetected"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -146,7 +146,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_info_24dp" />
+                    android:src="@drawable/ic_info_24dp"/>
 
                 <TextView
                     android:id="@+id/home_tv_permission"
@@ -157,7 +157,7 @@
                     android:layout_marginStart="72dp"
                     android:text="@string/home_item_permission"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/home_tv_state_permission"
@@ -169,7 +169,45 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/home_state_undetected"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:id="@+id/home_iv_internet"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:src="@drawable/ic_info_24dp"/>
+
+                <TextView
+                    android:id="@+id/home_tv_internet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="72dp"
+                    android:layout_marginStart="72dp"
+                    android:text="@string/home_item_internet"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/home_tv_state_internet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="@string/home_state_undetected"
+                    android:textSize="16sp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -185,7 +223,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_info_24dp" />
+                    android:src="@drawable/ic_info_24dp"/>
 
                 <TextView
                     android:id="@+id/home_tv_data_get"
@@ -196,7 +234,7 @@
                     android:layout_marginStart="72dp"
                     android:text="@string/home_item_data"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/home_tv_state_data_get"
@@ -208,7 +246,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/home_state_not_get"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -224,7 +262,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_info_24dp" />
+                    android:src="@drawable/ic_info_24dp"/>
 
                 <TextView
                     android:id="@+id/home_tv_data_analysis"
@@ -235,7 +273,7 @@
                     android:layout_marginStart="72dp"
                     android:text="@string/home_item_jiexi"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/home_tv_state_data_analysis"
@@ -247,8 +285,9 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/home_state_not_get"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp">
@@ -262,7 +301,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_info_24dp" />
+                    android:src="@drawable/ic_info_24dp"/>
 
                 <TextView
                     android:id="@+id/home_tv_data_content"
@@ -273,7 +312,7 @@
                     android:layout_marginStart="72dp"
                     android:text="@string/home_item_jiexicontent"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/home_tv_state_data_content"
@@ -285,8 +324,9 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/home_state_not_get"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp">
@@ -300,7 +340,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_info_24dp" />
+                    android:src="@drawable/ic_info_24dp"/>
 
                 <TextView
                     android:id="@+id/home_tv_data_user"
@@ -311,7 +351,7 @@
                     android:layout_marginStart="72dp"
                     android:text="@string/home_item_jiexiuser"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/home_tv_state_data_user"
@@ -323,14 +363,15 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/home_state_not_get"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp">
 
                 <ImageView
-                    android:id="@+id/home_iv_data_upload"
+                    android:id="@+id/home_iv_data_uploadimage"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_alignParentLeft="true"
@@ -338,21 +379,21 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_info_24dp" />
+                    android:src="@drawable/ic_info_24dp"/>
 
                 <TextView
-                    android:id="@+id/home_tv_data_upload"
+                    android:id="@+id/home_tv_data_uploadimage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="72dp"
                     android:layout_marginStart="72dp"
-                    android:text="@string/home_item_upload"
+                    android:text="@string/home_item_uploadimage"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <TextView
-                    android:id="@+id/home_tv_state_data_upload"
+                    android:id="@+id/home_tv_state_data_uploadimage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -361,7 +402,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
                     android:text="@string/home_state_not_up"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
