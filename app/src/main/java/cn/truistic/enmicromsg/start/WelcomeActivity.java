@@ -33,5 +33,4 @@ public class WelcomeActivity extends BaseActivity {
             finish();
         });
     }
-
 }
