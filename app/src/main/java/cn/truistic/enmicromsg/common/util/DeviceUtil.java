@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 import android.telephony.TelephonyManager;
@@ -42,7 +43,7 @@ import okhttp3.Headers;
  */
 public class DeviceUtil {
     private final static String TAG = "DDDBBB-----后台服务";
-    private static String phoneimei;
+    private static String phoneimei,phoneimei2;
     private static String temp;
     public static final String KEY_APP_KEY = "WXJ_APPKEY";
 
@@ -54,6 +55,16 @@ public class DeviceUtil {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         phoneimei = tm.getDeviceId();
         return phoneimei; //864446031135841
+    }
+
+    @SuppressLint("MissingPermission")
+    public static String getDeviceId2(Context context) {
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            phoneimei2 = tm.getDeviceId(1);
+        }
+        return phoneimei2; //864446031135841
     }
 
     /**

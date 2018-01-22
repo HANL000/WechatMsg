@@ -1,6 +1,8 @@
 package cn.truistic.enmicromsg.common.db;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import net.sqlcipher.Cursor;
@@ -10,9 +12,11 @@ import net.sqlcipher.database.SQLiteDatabaseHook;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 import cn.truistic.enmicromsg.common.util.DeviceUtil;
+import cn.truistic.enmicromsg.common.util.GetSystemInfoUtil;
 import cn.truistic.enmicromsg.common.util.JsonUtil;
 import cn.truistic.enmicromsg.common.util.MD5Util;
 import cn.truistic.enmicromsg.common.util.NetworkUtils;
@@ -70,6 +74,7 @@ public class DBUtil {
     }
 
     //*******************查詢微信聊天記錄*********************//
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public static void queryMessage(Context context)    {
 
         getWechatFile(context);
@@ -99,6 +104,13 @@ public class DBUtil {
                 database = SQLiteDatabase.openOrCreateDatabase(dbFile, dbPwd, null, hook);
                 break;
             } catch (Exception e) {
+                Log.d(TAG,"当前获取的IMEI="+imei+"不是应用破解所用的,请尝试另一个或者MEID");
+                Map<String, String> map = GetSystemInfoUtil.getImeiAndMeid(context);
+                String imei1 = map.get("imei1");
+                String imei2 = map.get("imei2");
+                String meid = map.get("meid");
+                Log.d(TAG,"IMEI1="+imei1+",IMEI2="+imei2+",MEID="+meid);
+
                 j++;
             }
         }

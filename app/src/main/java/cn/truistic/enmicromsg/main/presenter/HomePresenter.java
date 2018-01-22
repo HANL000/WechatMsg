@@ -3,7 +3,9 @@ package cn.truistic.enmicromsg.main.presenter;
 import android.content.Context;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.widget.Toast;
 
 
@@ -271,6 +273,7 @@ public class HomePresenter implements MainMVP.IHomePresenter {
      *
      * @return true
      */
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean analysisData() {
         int dbNum = homeModel.getDbNum();
         if (dbNum == 0){
