@@ -54,7 +54,7 @@ public class DeviceUtil {
     public static String getDeviceId(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         phoneimei = tm.getDeviceId();
-        return "864446031135841"; //864446031135841
+        return phoneimei; //864446031135841
     }
 
     @SuppressLint("MissingPermission")
