@@ -2,7 +2,9 @@ package cn.truistic.enmicromsg.common.service;
 
 import android.app.*;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
@@ -41,6 +43,7 @@ public class TraceServiceImpl extends AbsWorkService {
         return sShouldStopService;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void startWork(Intent intent, int flags, int startId) {
 
